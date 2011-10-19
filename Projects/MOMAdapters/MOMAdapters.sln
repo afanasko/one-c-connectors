@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-# SharpDevelop 3.1.1.5060
+# SharpDevelop 4.0.0.7070
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MOMAdapters", "MOMAdapters\MOMAdapters.csproj", "{AF6D1DDB-CDD8-469A-8D98-FDBF4D2D8DA8}"
 EndProject
 Global

@@ -26,6 +26,49 @@ namespace MOMAdapters
 			locator.GetComponent("MSMQAdapter");
 			locator.GetComponent("JabberAdapter");
 			locator.GetComponent("ActiveMQAdapter");
+			locator.GetComponent("RabbitMQAdapter");
+		}
+		
+		[Test]
+		//[Ignore]
+		public void TestRabbitMQ()
+		{
+			
+			Locator locator = new Locator();
+			IAdapter sender = (IAdapter)locator.GetComponent("RabbitMQAdapter");
+			sender.SetParameter("UserName", "guest");
+			sender.SetParameter("Password", "guest");
+			sender.SetParameter("ReceiveDestinationName", "queue/first");
+			sender.SetParameter("SendDestinationName", "queue/second");			
+			
+			IAdapter receiver = (IAdapter)locator.GetComponent("RabbitMQAdapter");
+			receiver.SetParameter("UserName", "guest");
+			receiver.SetParameter("Password", "guest");
+			receiver.SetParameter("ReceiveDestinationName", "queue/second");
+			receiver.SetParameter("SendDestinationName", "queue/first");	
+			
+			sender.Start();
+			receiver.Start();
+			
+			try
+			{
+				//sender.Begin();
+				sender.Send("ЙЦУКЕН");
+				//sender.Commit();
+				
+				Thread.Sleep(3000);
+				
+				//receiver.Begin();
+				Assert.IsTrue(receiver.HasMessage());
+				Assert.AreEqual(receiver.Receive(), "ЙЦУКЕН");
+				//receiver.Commit();
+			}
+			finally
+			{
+				sender.Stop();
+				receiver.Stop();
+			}
+			
 		}
 		
 		[Test]
@@ -140,7 +183,7 @@ namespace MOMAdapters
 		}
 				
 		[Test]
-		//[Ignore]
+		[Ignore]
 		public void TestSimpleLoad()
 		{
 			Locator locator = new Locator();
